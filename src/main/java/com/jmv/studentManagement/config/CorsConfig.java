@@ -12,7 +12,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")  // Specify the path pattern to which this CORS configuration should apply
-                .allowedOrigins("https://jmv-react-spring-boot-apis-frontend.onrender.com", "http://localhost:5173")  // Allow requests from your React frontend domain
+                .allowedOrigins("https://apis-react-spring-client-kayumba.vercel.app", "http://localhost:5173")  // Allow requests from your React frontend domain
                 .allowedMethods("GET", "POST", "PUT", "DELETE")  // Allow these HTTP methods
                 .allowedHeaders("*");  // Allow all headers
     }
