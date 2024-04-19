@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ page import="java.util.List"%>
-<%@ page import="com.jmv.studentManagement.model.Student"%>
+<%@ page import="com.jmv.libraryManagement.model.Book"%>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -32,8 +32,8 @@
 			</thead>
 			<tbody>
 				<%
-				List<Student> students = (List<Student>) request.getAttribute("students");
-				for (Student student : students) {
+				List<Book> students = (List<Book>) request.getAttribute("students");
+						for (Book student : students) {
 				%>
 				<tr>
 					<td><%=student.getId()%></td>
