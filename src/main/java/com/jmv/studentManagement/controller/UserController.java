@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.jmv.studentManagement.model.LoginDto;
 import com.jmv.studentManagement.model.RegisterDto;
+import com.jmv.studentManagement.model.Student;
 import com.jmv.studentManagement.model.User;
 import com.jmv.studentManagement.service.UserService;
 
@@ -43,8 +44,13 @@ public class UserController {
 		return userService.getAllUsers();
 	}
     
+    @GetMapping("/{id}/get")
+	public ResponseEntity<User> getUserById(@PathVariable("id") long id){
+		return new ResponseEntity<User>(userService.getUserById(id), HttpStatus.OK);
+	}
+    
     @DeleteMapping("/{id}/delete")
-	public ResponseEntity<String> deleteStudentById(@PathVariable("id") long id){
+	public ResponseEntity<String> deleteUserById(@PathVariable("id") long id){
 		userService.deleteUserById(id);
 		return new ResponseEntity<String>("User deleted successfully!!", HttpStatus.OK);
 	}
