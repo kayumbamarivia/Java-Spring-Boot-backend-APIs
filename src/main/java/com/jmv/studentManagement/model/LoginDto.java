@@ -1,18 +1,21 @@
 package com.jmv.studentManagement.model;
 
 public class LoginDto {
-    private String email;
+    private String username;
     private String password;
-	public LoginDto(String email, String password) {
+	public LoginDto() {
 		super();
-		this.email = email;
+	}
+	public LoginDto(String username, String password) {
+		super();
+		this.username = username;
 		this.password = password;
 	}
-	public String getEmail() {
-		return email;
+	public String getUsername() {
+		return username;
 	}
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;

@@ -11,47 +11,49 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.jmv.studentManagement.model.LoginDto;
 import com.jmv.studentManagement.model.RegisterDto;
-import com.jmv.studentManagement.model.Student;
 import com.jmv.studentManagement.model.User;
-import com.jmv.studentManagement.service.UserService;
+import com.jmv.studentManagement.service.impl.UserServiceImpl;
 
 @RestController
-@RequestMapping("/api/users")
-public class UserController {
+@RequestMapping("/api")
+public class AuthController {
 
-    private UserService userService;
+    private UserServiceImpl userServiceImpl;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
+    public AuthController(UserServiceImpl userServiceImpl) {
+		super();
+		this.userServiceImpl = userServiceImpl;
+	}
 
-    // Build Login REST API
+	// Build Login REST API
     @PostMapping(value = {"/login", "/signin"})
-    public ResponseEntity<User> login(@RequestBody LoginDto loginDto){
-    	return ResponseEntity.ok(userService.login(loginDto));
-    }
+    public ResponseEntity<AuthResponse> authenticate(@RequestBody LoginDto request){
+		return ResponseEntity.ok(userServiceImpl.login(request));
+	}
 
     // Build Register REST API
     @PostMapping(value = {"/register", "/signup"})
-    public ResponseEntity<User> register(@RequestBody RegisterDto registerDto){
-    	return new ResponseEntity<User>(userService.register(registerDto), HttpStatus.CREATED);
-    }
+    public ResponseEntity<AuthResponse> register(@RequestBody RegisterDto request){
+		AuthResponse response = userServiceImpl.register(request);
+		return ResponseEntity.ok(response);
+	}
     
-    @GetMapping()
+    @GetMapping("/users")
 	public List<User> getAllUsers(){
-		return userService.getAllUsers();
+		return userServiceImpl.getAllUsers();
 	}
     
-    @GetMapping("/{id}/get")
+    @GetMapping("/users/{id}/get")
 	public ResponseEntity<User> getUserById(@PathVariable("id") long id){
-		return new ResponseEntity<User>(userService.getUserById(id), HttpStatus.OK);
+		return new ResponseEntity<User>(userServiceImpl.getUserById(id), HttpStatus.OK);
 	}
     
-    @DeleteMapping("/{id}/delete")
+    @DeleteMapping("/users/{id}/delete")
 	public ResponseEntity<String> deleteUserById(@PathVariable("id") long id){
-		userService.deleteUserById(id);
+    	userServiceImpl.deleteUserById(id);
 		return new ResponseEntity<String>("User deleted successfully!!", HttpStatus.OK);
 	}
 }
