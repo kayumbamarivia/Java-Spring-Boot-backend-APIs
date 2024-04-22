@@ -24,26 +24,10 @@ public class User implements UserDetails {
 	@Column(unique = true)
 	private String username;
 	private String password;
+	private String avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
 	@Enumerated(EnumType.STRING)
 	private Role role;
-	public User() {
-		super();
-	}
-	public User(Long id, String name, String username, String password, Role role) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.username = username;
-		this.password = password;
-		this.role = role;
-	}
-	public User(String name, String username, String password, Role role) {
-		super();
-		this.name = name;
-		this.username = username;
-		this.password = password;
-		this.role = role;
-	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -68,11 +52,41 @@ public class User implements UserDetails {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
 	public Role getRole() {
 		return role;
 	}
 	public void setRole(Role role) {
 		this.role = role;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	public User(String name, String username, String password, String avatar, Role role) {
+		super();
+		this.name = name;
+		this.username = username;
+		this.password = password;
+		this.avatar = avatar;
+		this.role = role;
+	}
+	public User(Long id, String name, String username, String password, String avatar, Role role) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.username = username;
+		this.password = password;
+		this.avatar = avatar;
+		this.role = role;
+	}
+	public User() {
+		super();
+		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

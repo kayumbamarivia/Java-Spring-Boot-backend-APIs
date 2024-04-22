@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jmv.studentManagement.model.Student;
 import com.jmv.studentManagement.service.StudentService;
 
-import jakarta.websocket.server.PathParam;
-
 //@Controller
 @RestController
 @RequestMapping("/api/students")

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,43 +18,70 @@ import com.jmv.studentManagement.model.RegisterDto;
 import com.jmv.studentManagement.model.User;
 import com.jmv.studentManagement.service.impl.UserServiceImpl;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/api")
 public class AuthController {
 
-    private UserServiceImpl userServiceImpl;
+	private UserServiceImpl userServiceImpl;
 
-    public AuthController(UserServiceImpl userServiceImpl) {
+	
+
+	public AuthController(UserServiceImpl userServiceImpl) {
 		super();
 		this.userServiceImpl = userServiceImpl;
 	}
 
 	// Build Login REST API
-    @PostMapping(value = {"/login", "/signin"})
-    public ResponseEntity<AuthResponse> authenticate(@RequestBody LoginDto request){
+	@PostMapping(value = {"/login", "/signin"})
+	public ResponseEntity<AuthResponse> authenticate(@RequestBody LoginDto request){
 		return ResponseEntity.ok(userServiceImpl.login(request));
 	}
 
-    // Build Register REST API
-    @PostMapping(value = {"/register", "/signup"})
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterDto request){
+	// Build Register REST API
+	@PostMapping(value = {"/register", "/signup"})
+	public ResponseEntity<AuthResponse> register(@RequestBody RegisterDto request){
 		AuthResponse response = userServiceImpl.register(request);
 		return ResponseEntity.ok(response);
 	}
-    
-    @GetMapping("/users")
+
+	// Logout API
+	@GetMapping("/token")
+	public ResponseEntity<String> logout(HttpServletRequest request) {
+		String token = extractTokenFromRequest(request);
+			return ResponseEntity.ok("User token is this : "+token);
+	}
+
+	private String extractTokenFromRequest(HttpServletRequest request) {
+		String authorizationHeader = request.getHeader("Authorization");
+		if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+			return authorizationHeader.substring(7);
+		}
+		return null;
+	}
+
+
+	@GetMapping("/users")
 	public List<User> getAllUsers(){
 		return userServiceImpl.getAllUsers();
 	}
-    
-    @GetMapping("/users/{id}/get")
+
+	@GetMapping("/user/{id}/get")
 	public ResponseEntity<User> getUserById(@PathVariable("id") long id){
 		return new ResponseEntity<User>(userServiceImpl.getUserById(id), HttpStatus.OK);
 	}
-    
-    @DeleteMapping("/users/{id}/delete")
+
+	@DeleteMapping("/user/{id}/delete")
 	public ResponseEntity<String> deleteUserById(@PathVariable("id") long id){
-    	userServiceImpl.deleteUserById(id);
+		userServiceImpl.deleteUserById(id);
 		return new ResponseEntity<String>("User deleted successfully!!", HttpStatus.OK);
 	}
+	
+	// Update User API
+    @PutMapping("/user/{id}/edit")
+    public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
+        User updatedUser = userServiceImpl.updateUserById(user, id);
+        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    }
 }

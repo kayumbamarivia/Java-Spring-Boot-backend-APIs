@@ -49,6 +49,12 @@ public class UserServiceImpl implements UserService {
 		user.setName(request.getName());
 		user.setUsername(request.getUsername());
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
+		 String avatar = request.getAvatar();
+		    if (avatar == null || avatar.isEmpty()) {
+		        user.setAvatar("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+		    } else {
+		        user.setAvatar(avatar);
+		    }
 		user.setRole(request.getRole());
 		user = repo.save(user);
 		String token = jwtServiceImpl.generateToken(user);
@@ -69,5 +75,16 @@ public class UserServiceImpl implements UserService {
 	public void deleteUserById(long id) {
 		repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
 		repo.deleteById(id);
+	}
+	
+	@Override
+	public User updateUserById(User u, long id) {
+		User exixtingOne = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+		exixtingOne.setName(u.getName());
+		exixtingOne.setUsername(u.getUsername());
+		exixtingOne.setPassword(u.getPassword());
+		exixtingOne.setAvatar(u.getAvatar());
+		repo.save(exixtingOne);
+		return exixtingOne;
 	}
 }

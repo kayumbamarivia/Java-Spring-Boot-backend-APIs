@@ -4,15 +4,17 @@ public class RegisterDto {
     private String name;
     private String username;
     private String password;
+    private String avatar;
     private Role role;
 	public RegisterDto() {
 		super();
 	}
-	public RegisterDto(String name, String username, String password, Role role) {
+	public RegisterDto(String name, String username, String password, String avatar, Role role) {
 		super();
 		this.name = name;
 		this.username = username;
 		this.password = password;
+		this.avatar = avatar;
 		this.role = role;
 	}
 	public String getName() {
@@ -33,11 +35,16 @@ public class RegisterDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public String getAvatar() {
+		return avatar;
+	}
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
 	public Role getRole() {
 		return role;
 	}
 	public void setRole(Role role) {
 		this.role = role;
 	}
-	
 }
