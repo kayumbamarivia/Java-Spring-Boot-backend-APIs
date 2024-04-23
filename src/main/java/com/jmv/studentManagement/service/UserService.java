@@ -7,7 +7,7 @@ import com.jmv.studentManagement.model.RegisterDto;
 import com.jmv.studentManagement.model.User;
 
 public interface UserService {
-    Object login(LoginDto loginDto);
+    User login(LoginDto loginDto);
 	User register(RegisterDto registerDto);
 	List<User> getAllUsers();
 	void deleteUserById(long id);

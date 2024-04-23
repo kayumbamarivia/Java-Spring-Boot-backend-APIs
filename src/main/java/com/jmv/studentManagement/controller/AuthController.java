@@ -1,7 +1,6 @@
 package com.jmv.studentManagement.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,28 +16,38 @@ import org.springframework.web.bind.annotation.RestController;
 import com.jmv.studentManagement.model.LoginDto;
 import com.jmv.studentManagement.model.RegisterDto;
 import com.jmv.studentManagement.model.User;
+import com.jmv.studentManagement.service.impl.JwtServiceImpl;
 import com.jmv.studentManagement.service.impl.UserServiceImpl;
 
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @RequestMapping("/api")
 public class AuthController {
 
-	private UserServiceImpl userServiceImpl;
+	private final UserServiceImpl userServiceImpl;
+    private final JwtServiceImpl jwtServiceImpl;
 
-	
-
-	public AuthController(UserServiceImpl userServiceImpl) {
+	public AuthController(UserServiceImpl userServiceImpl, JwtServiceImpl jwtServiceImpl) {
 		super();
 		this.userServiceImpl = userServiceImpl;
+		this.jwtServiceImpl = jwtServiceImpl;
 	}
 
 	// Build Login REST API
-	@PostMapping(value = {"/login", "/signin"})
-	public ResponseEntity<Map<String, Object>> authenticate(@RequestBody LoginDto request){
-		return ResponseEntity.ok(userServiceImpl.login(request));
-	}
+	 @PostMapping(value = {"/login", "/signin"})
+	    public ResponseEntity<User> authenticate(@RequestBody LoginDto request, HttpServletResponse response) {
+	        User user = userServiceImpl.login(request);
+	        String token = jwtServiceImpl.generateToken(user);
+	        
+	        Cookie cookie = new Cookie("token", token);
+	        cookie.setHttpOnly(true);
+	        cookie.setPath("/");
+	        response.addCookie(cookie);
+	        return ResponseEntity.ok(user);
+	    }
 
 	// Build Register REST API
 	@PostMapping(value = {"/register", "/signup"})

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jmv.studentManagement.exception.ResourceNotFoundException;
 import com.jmv.studentManagement.model.Student;
+import com.jmv.studentManagement.model.User;
 import com.jmv.studentManagement.repository.StudentRepository;
 import com.jmv.studentManagement.service.StudentService;
 
@@ -61,5 +62,17 @@ public class StudentServiceImpl implements StudentService {
 	@Override
 	public List<Student> Search(String query) {
 		return studentRepository.findByFirstNameContainingOrLastNameContainingOrEmailContaining(query, query, query);
+	}
+
+	@Override
+	public Student getStudentByUserId(long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Student updateStudentByUserId(User u, long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

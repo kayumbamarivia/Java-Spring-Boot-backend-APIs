@@ -1,8 +1,6 @@
 package com.jmv.studentManagement.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -19,31 +17,23 @@ import com.jmv.studentManagement.service.UserService;
 public class UserServiceImpl implements UserService {
 	private final UserRepository repo;
 	private final PasswordEncoder passwordEncoder;
-	private final JwtServiceImpl jwtServiceImpl;
 	private final AuthenticationManager authenticationManager;
 
 
-	public UserServiceImpl(UserRepository repo, PasswordEncoder passwordEncoder, JwtServiceImpl jwtServiceImpl,
+	public UserServiceImpl(UserRepository repo, PasswordEncoder passwordEncoder,
 			AuthenticationManager authenticationManager) {
 		super();
 		this.repo = repo;
 		this.passwordEncoder = passwordEncoder;
-		this.jwtServiceImpl = jwtServiceImpl;
 		this.authenticationManager = authenticationManager;
 	}
 
 	@Override
-	public  Map<String, Object> login(LoginDto request) {
+	public  User login(LoginDto request) {
 		authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 		User user = repo.findByUsername(request.getUsername()).orElseThrow();
-		String token = jwtServiceImpl.generateToken(user);
-
-		Map<String, Object> response = new HashMap<>();
-		response.put("user", user);
-		response.put("token", token);
-
-		return response;
+		return user;
 	}
 
 	@Override
