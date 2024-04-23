@@ -1,13 +1,13 @@
 package com.jmv.studentManagement.service.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.jmv.studentManagement.controller.AuthResponse;
 import com.jmv.studentManagement.exception.ResourceNotFoundException;
 import com.jmv.studentManagement.model.LoginDto;
 import com.jmv.studentManagement.model.RegisterDto;
@@ -33,34 +33,36 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public AuthResponse login(LoginDto request) {
+	public  Map<String, Object> login(LoginDto request) {
 		authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
-
 		User user = repo.findByUsername(request.getUsername()).orElseThrow();
 		String token = jwtServiceImpl.generateToken(user);
 
-		return new AuthResponse(token);
+		Map<String, Object> response = new HashMap<>();
+		response.put("user", user);
+		response.put("token", token);
+
+		return response;
 	}
 
 	@Override
-	public AuthResponse register(RegisterDto request) {
+	public User register(RegisterDto request) {
 		User user = new User();
 		user.setName(request.getName());
 		user.setUsername(request.getUsername());
 		user.setPassword(passwordEncoder.encode(request.getPassword()));
-		 String avatar = request.getAvatar();
-		    if (avatar == null || avatar.isEmpty()) {
-		        user.setAvatar("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
-		    } else {
-		        user.setAvatar(avatar);
-		    }
+		String avatar = request.getAvatar();
+		if (avatar == null || avatar.isEmpty()) {
+			user.setAvatar("https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png");
+		} else {
+			user.setAvatar(avatar);
+		}
 		user.setRole(request.getRole());
 		user = repo.save(user);
-		String token = jwtServiceImpl.generateToken(user);
-
-		return new AuthResponse(token);
+		return user;
 	}
+
 
 	@Override
 	public User getUserById(long id) {
@@ -76,7 +78,7 @@ public class UserServiceImpl implements UserService {
 		repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
 		repo.deleteById(id);
 	}
-	
+
 	@Override
 	public User updateUserById(User u, long id) {
 		User exixtingOne = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));

@@ -1,6 +1,7 @@
 package com.jmv.studentManagement.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,14 +36,14 @@ public class AuthController {
 
 	// Build Login REST API
 	@PostMapping(value = {"/login", "/signin"})
-	public ResponseEntity<AuthResponse> authenticate(@RequestBody LoginDto request){
+	public ResponseEntity<Map<String, Object>> authenticate(@RequestBody LoginDto request){
 		return ResponseEntity.ok(userServiceImpl.login(request));
 	}
 
 	// Build Register REST API
 	@PostMapping(value = {"/register", "/signup"})
-	public ResponseEntity<AuthResponse> register(@RequestBody RegisterDto request){
-		AuthResponse response = userServiceImpl.register(request);
+	public ResponseEntity<User> register(@RequestBody RegisterDto request){
+		User response = userServiceImpl.register(request);
 		return ResponseEntity.ok(response);
 	}
 
