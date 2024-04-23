@@ -15,9 +15,33 @@ public class Student {
 	private String lastName;
 	@Column(name="email")
 	private String email;
-	@Override
-	public String toString() {
-		return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
+	@Column(name="user_id")
+	private Long userId;
+	public Student() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+	public Student(long id, String firstName, String lastName, String email, Long userId) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.userId = userId;
+	}
+	public Student(String firstName, String lastName, String email, Long userId) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.userId = userId;
+	}
+	public Student(long id, String firstName, String lastName, String email) {
+		super();
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
 	}
 	public long getId() {
 		return id;
@@ -43,21 +67,10 @@ public class Student {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	public Student(String firstName, String lastName, String email) {
-		super();
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
+	public Long getUserId() {
+		return userId;
 	}
-	public Student(long id, String firstName, String lastName, String email) {
-		super();
-		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
-	public Student() {
-		super();
-	}
-	
 }

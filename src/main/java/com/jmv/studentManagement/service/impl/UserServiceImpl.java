@@ -81,12 +81,32 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User updateUserById(User u, long id) {
-		User exixtingOne = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
-		exixtingOne.setName(u.getName());
-		exixtingOne.setUsername(u.getUsername());
-		exixtingOne.setPassword(u.getPassword());
-		exixtingOne.setAvatar(u.getAvatar());
-		repo.save(exixtingOne);
-		return exixtingOne;
+		User existingOne = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+		String name = u.getName();
+		if (name == null || name.isEmpty()) {
+			u.setName(existingOne.getName());
+		} else {
+			existingOne.setName(u.getName());
+		}
+		String username = u.getUsername();
+		if (username == null || username.isEmpty()) {
+			u.setUsername(existingOne.getUsername());
+		} else {
+			existingOne.setUsername(u.getUsername());
+		}
+		String pass = u.getPassword();
+		if (pass == null || pass.isEmpty()) {
+			u.setPassword(existingOne.getPassword());
+		} else {
+			existingOne.setPassword(passwordEncoder.encode(u.getPassword()));
+		}
+		String avatar = u.getAvatar();
+		if (avatar == null || avatar.isEmpty()) {
+			u.setAvatar(existingOne.getAvatar());
+		} else {
+			existingOne.setAvatar(u.getAvatar());
+		}
+		repo.save(existingOne);
+		return existingOne;
 	}
 }
