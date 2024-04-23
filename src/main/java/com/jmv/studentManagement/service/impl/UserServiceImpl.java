@@ -81,32 +81,29 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User updateUserById(User u, long id) {
-		User existingOne = repo.findById(id).orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
-		String name = u.getName();
-		if (name == null || name.isEmpty()) {
-			u.setName(existingOne.getName());
-		} else {
-			existingOne.setName(u.getName());
-		}
-		String username = u.getUsername();
-		if (username == null || username.isEmpty()) {
-			u.setUsername(existingOne.getUsername());
-		} else {
-			existingOne.setUsername(u.getUsername());
-		}
-		String pass = u.getPassword();
-		if (pass == null || pass.isEmpty()) {
-			u.setPassword(existingOne.getPassword());
-		} else {
-			existingOne.setPassword(passwordEncoder.encode(u.getPassword()));
-		}
-		String avatar = u.getAvatar();
-		if (avatar == null || avatar.isEmpty()) {
-			u.setAvatar(existingOne.getAvatar());
-		} else {
-			existingOne.setAvatar(u.getAvatar());
-		}
-		repo.save(existingOne);
-		return existingOne;
+	    User existingOne = repo.findById(id)
+	                           .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+
+	    String name = u.getName();
+	    if (name != null && !name.isEmpty()) {
+	        existingOne.setName(name);
+	    }
+
+	    String username = u.getUsername();
+	    if (username != null && !username.isEmpty()) {
+	        existingOne.setUsername(username);
+	    }
+
+	    String pass = u.getPassword();
+	    if (pass != null && !pass.isEmpty()) {
+	        existingOne.setPassword(passwordEncoder.encode(pass));
+	    }
+
+	    String avatar = u.getAvatar();
+	    if (avatar != null && !avatar.isEmpty()) {
+	        existingOne.setAvatar(avatar);
+	    }
+	    
+	    return repo.save(existingOne);
 	}
 }
