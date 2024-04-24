@@ -43,7 +43,7 @@ public class AuthController {
 	        String token = jwtServiceImpl.generateToken(user);
 	        
 	        Cookie cookie = new Cookie("token", token);
-	        cookie.setHttpOnly(true);
+	        cookie.setHttpOnly(false);
 	        cookie.setPath("/");
 	        response.addCookie(cookie);
 	        return ResponseEntity.ok(user);
