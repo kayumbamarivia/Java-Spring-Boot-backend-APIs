@@ -19,7 +19,7 @@ import com.jmv.studentManagement.service.StudentService;
 
 //@Controller
 @RestController
-@RequestMapping("/api/students")
+@RequestMapping("/api")
 public class StudentController {
 	private StudentService studentService;
 
@@ -41,10 +41,11 @@ public class StudentController {
 	//		return "redirect:/api/students/home";
 	//	}
 
-	@PostMapping("/add")
-	public ResponseEntity<Student> saveStudent(@RequestBody Student st){
-		return new ResponseEntity<Student>(studentService.saveStudent(st), HttpStatus.CREATED);
+	@PostMapping("/student/{userId}/add")
+	public ResponseEntity<Student> saveStudent(@RequestBody Student st, @PathVariable("userId") long userId) {
+	    return new ResponseEntity<Student>(studentService.saveStudentByUserId(st, userId), HttpStatus.CREATED);
 	}
+
 
 	//	REST API TO GET ALL RESOURCES(STUDENTS)
 
@@ -55,9 +56,13 @@ public class StudentController {
 	//		return "index";
 	//	}
 
-	@GetMapping()
+	@GetMapping("/students")
 	public List<Student> getAllStudents(){
 		return studentService.getAllStudents();
+	}
+	@GetMapping("/{userId}/students")
+	public List<Student> getAllStudentsByUserId(@PathVariable("userId") long userId){
+		return studentService.getStudentsByUserId(userId);
 	}
 
 
@@ -70,7 +75,7 @@ public class StudentController {
 	//		return "student";
 	//	}
 
-	@GetMapping("/{id}/get")
+	@GetMapping("/student/{id}/get")
 	public ResponseEntity<Student> getStudentById(@PathVariable("id") long id){
 		return new ResponseEntity<Student>(studentService.getStudentById(id), HttpStatus.OK);
 	}
@@ -90,7 +95,7 @@ public class StudentController {
 	//		return "redirect:/api/students/home";
 	//	}
 
-	@PutMapping("/{id}/edit")
+	@PutMapping("/student/{id}/edit")
 	public ResponseEntity<Student> updateStudentById(@RequestBody Student st,@PathVariable("id") long id){
 		return new ResponseEntity<Student>(studentService.updateStudentById(st,id), HttpStatus.OK);
 	}
@@ -103,7 +108,7 @@ public class StudentController {
 	//		return "redirect:/api/students/home"; 
 	//	}
 
-	@DeleteMapping("/{id}/delete")
+	@DeleteMapping("/student/{id}/delete")
 	public ResponseEntity<String> deleteStudentById(@PathVariable("id") long id){
 		studentService.deleteStudentById(id);
 		return new ResponseEntity<String>("Student deleted successfully!!", HttpStatus.OK);
@@ -111,9 +116,14 @@ public class StudentController {
 
 	//		REST API TO SEARCH FOR A RESOURCE(S)
 
-	@GetMapping("/search")
+	@GetMapping("/students/search")
 	public List<Student> search(@RequestParam("searchTerm") String query){
 		List<Student> searchResults = studentService.Search(query);
+		return searchResults;
+	}
+	@GetMapping("/student/{userId}/search")
+	public List<Student> search(@RequestParam("searchTerm") String query, @PathVariable("userId") long userId){
+		List<Student> searchResults = studentService.SearchByUserId(query, userId);
 		return searchResults;
 	}
 

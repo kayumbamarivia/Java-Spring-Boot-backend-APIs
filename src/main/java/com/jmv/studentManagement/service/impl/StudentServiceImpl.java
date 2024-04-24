@@ -1,7 +1,6 @@
 package com.jmv.studentManagement.service.impl;
-
-
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,21 +9,21 @@ import com.jmv.studentManagement.exception.ResourceNotFoundException;
 import com.jmv.studentManagement.model.Student;
 import com.jmv.studentManagement.model.User;
 import com.jmv.studentManagement.repository.StudentRepository;
+import com.jmv.studentManagement.repository.UserRepository;
 import com.jmv.studentManagement.service.StudentService;
 
 @Service
 public class StudentServiceImpl implements StudentService {
 	@Autowired
-	private StudentRepository studentRepository;
+	private final StudentRepository studentRepository;
+	private final UserRepository repo;
 
-	public StudentServiceImpl(StudentRepository studentRepository) {
+	
+	
+	public StudentServiceImpl(StudentRepository studentRepository, UserRepository repo) {
 		super();
 		this.studentRepository = studentRepository;
-	}
-
-	@Override
-	public Student saveStudent(Student st) {
-		return studentRepository.save(st);
+		this.repo = repo;
 	}
 
 	@Override
@@ -65,14 +64,25 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public Student getStudentByUserId(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Student saveStudentByUserId(Student st, long id) {
+		Optional<User> userOptional = repo.findById(id);
+		if (userOptional.isPresent()) {
+	        User user = userOptional.get();
+	        st.setUserId(user.getId());
+	        return studentRepository.save(st);
+	    } else {
+	        throw new ResourceNotFoundException("Student", "id", id);
+	    }
 	}
 
 	@Override
-	public Student updateStudentByUserId(User u, long id) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Student> getStudentsByUserId(long userId) {
+	    return studentRepository.findByUserId(userId);
+	}
+
+
+	@Override
+	public List<Student> SearchByUserId(String query, long userId) {
+		return studentRepository.findByFirstNameContainingOrLastNameContainingOrEmailContainingAndUserIdContaining(query, query, query, userId);
 	}
 }

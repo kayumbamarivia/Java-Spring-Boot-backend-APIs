@@ -3,15 +3,14 @@
 import java.util.List;
 
 import com.jmv.studentManagement.model.Student;
-import com.jmv.studentManagement.model.User;
 
 public interface StudentService {
-	Student saveStudent(Student st);
+	Student saveStudentByUserId(Student st, long id);
 	List<Student> getAllStudents();
 	Student getStudentById(long id);
-	Student getStudentByUserId(long id);
+	List<Student> getStudentsByUserId(long id);
 	Student updateStudentById(Student st, long id);
-	Student updateStudentByUserId(User u, long id);
 	void deleteStudentById(long id);
 	List<Student> Search(String query);
+	List<Student> SearchByUserId(String query, long userId);
 }

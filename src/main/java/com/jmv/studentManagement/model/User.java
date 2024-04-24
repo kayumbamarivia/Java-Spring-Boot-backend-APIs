@@ -24,7 +24,7 @@ public class User implements UserDetails {
 	@Column(unique = true)
 	private String username;
 	private String password;
-	private String avatar = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+	private String avatar;
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	
@@ -86,7 +86,6 @@ public class User implements UserDetails {
 	}
 	public User() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

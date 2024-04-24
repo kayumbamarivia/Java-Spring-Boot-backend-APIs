@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
 	    }
 
 	    String avatar = u.getAvatar();
-	    if (avatar != null && !avatar.isEmpty()) {
+	    if (avatar != null) {
 	        existingOne.setAvatar(avatar);
 	    }
 	    

@@ -36,7 +36,7 @@ public class AuthController {
         this.jwtServiceImpl = jwtServiceImpl;
     }
 
-    // Build Login REST API
+    
     @PostMapping(value = {"/login", "/signin"})
     public ResponseEntity<Map<String, Object>> authenticate(@RequestBody LoginDto request) {
         User user = userServiceImpl.login(request);
@@ -46,17 +46,15 @@ public class AuthController {
         response.put("token", token);
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
-
-    // Build Register REST API
+    
     @PostMapping(value = {"/register", "/signup"})
     public ResponseEntity<User> register(@RequestBody RegisterDto request){
         User response = userServiceImpl.register(request);
         return ResponseEntity.ok(response);
     }
 
-    // Logout API
     @GetMapping("/token")
-    public ResponseEntity<String> logout(HttpServletRequest request) {
+    public ResponseEntity<String> getYourToken(HttpServletRequest request) {
         String token = extractTokenFromRequest(request);
         return ResponseEntity.ok("User token is this : "+token);
     }
@@ -86,9 +84,7 @@ public class AuthController {
         JsonResponse response = new JsonResponse("User deleted successfully!!");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-
-
-    // Update User API
+    
     @PutMapping("/user/{id}/edit")
     public ResponseEntity<User> updateUser(@PathVariable("id") long id, @RequestBody User user) {
         User updatedUser = userServiceImpl.updateUserById(user, id);
