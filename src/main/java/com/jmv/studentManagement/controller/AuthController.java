@@ -1,8 +1,9 @@
 package com.jmv.studentManagement.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,14 +38,13 @@ public class AuthController {
 
     // Build Login REST API
     @PostMapping(value = {"/login", "/signin"})
-    public ResponseEntity<User> authenticate(@RequestBody LoginDto request) {
+    public ResponseEntity<Map<String, Object>> authenticate(@RequestBody LoginDto request) {
         User user = userServiceImpl.login(request);
         String token = jwtServiceImpl.generateToken(user);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", "Bearer " + token);
-
-        return new ResponseEntity<>(user, headers, HttpStatus.OK);
+        Map<String, Object> response = new HashMap<>();
+        response.put("user", user);
+        response.put("token", token);
+        return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
     // Build Register REST API
