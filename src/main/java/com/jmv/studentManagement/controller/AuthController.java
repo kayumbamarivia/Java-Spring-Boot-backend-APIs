@@ -81,10 +81,12 @@ public class AuthController {
     }
 
     @DeleteMapping("/user/{id}/delete")
-    public ResponseEntity<String> deleteUserById(@PathVariable("id") long id){
+    public ResponseEntity<JsonResponse> deleteUserById(@PathVariable("id") long id) {
         userServiceImpl.deleteUserById(id);
-        return new ResponseEntity<String>("User deleted successfully!!", HttpStatus.OK);
+        JsonResponse response = new JsonResponse("User deleted successfully!!");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
 
     // Update User API
     @PutMapping("/user/{id}/edit")
