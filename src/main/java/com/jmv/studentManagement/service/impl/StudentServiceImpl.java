@@ -83,6 +83,6 @@ public class StudentServiceImpl implements StudentService {
 
 	@Override
 	public List<Student> SearchByUserId(String query, long userId) {
-		return studentRepository.findByFirstNameContainingOrLastNameContainingOrEmailContainingAndUserIdContaining(query, query, query, userId);
+		return studentRepository.findByFirstNameContainingOrLastNameContainingOrEmailContainingAndUserId(query, query, query, userId);
 	}
 }
