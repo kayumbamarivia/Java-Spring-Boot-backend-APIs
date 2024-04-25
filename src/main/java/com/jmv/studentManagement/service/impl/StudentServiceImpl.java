@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jmv.studentManagement.controller.SearchRequest;
 import com.jmv.studentManagement.exception.ResourceNotFoundException;
 import com.jmv.studentManagement.model.Student;
 import com.jmv.studentManagement.model.User;
@@ -81,8 +82,8 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public List<Student> searchByUserId(Long userId, String searchTerm) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Student> searchByUserId(SearchRequest searchRequest) {
+		return studentRepository.findByUserIdAndSearchTerm(
+                searchRequest.getUserId(), searchRequest.getSearchTerm());
 	}
 }

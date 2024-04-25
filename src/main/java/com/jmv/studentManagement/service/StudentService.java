@@ -2,6 +2,7 @@
 
 import java.util.List;
 
+import com.jmv.studentManagement.controller.SearchRequest;
 import com.jmv.studentManagement.model.Student;
 
 public interface StudentService {
@@ -12,5 +13,5 @@ public interface StudentService {
 	Student updateStudentById(Student st, long id);
 	void deleteStudentById(long id);
 	List<Student> search(String query);
-	List<Student> searchByUserId(Long userId, String searchTerm);
+	List<Student> searchByUserId(SearchRequest searchRequest);
 }
