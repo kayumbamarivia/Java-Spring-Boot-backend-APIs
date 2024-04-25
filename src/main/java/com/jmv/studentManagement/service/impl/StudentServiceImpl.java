@@ -79,13 +79,10 @@ public class StudentServiceImpl implements StudentService {
 	public List<Student> getStudentsByUserId(long userId) {
 	    return studentRepository.findByUserId(userId);
 	}
-    
+
 	@Override
 	public List<Student> searchByUserId(Long userId, String searchTerm) {
-        return studentRepository.findByUserIdAndFirstNameContainingOrLastNameContainingOrEmailContaining(
-            userId, searchTerm, searchTerm, searchTerm);
-    }
-
-
-
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

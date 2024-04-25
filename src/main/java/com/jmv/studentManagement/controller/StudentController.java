@@ -134,7 +134,7 @@ public class StudentController {
 	            return List.of();
 	        }
 	    } else {
-	        return studentRepository.findBySearchTerm(searchRequest.getSearchTerm());
+	        return studentRepository.findByFirstNameContainingOrLastNameContainingOrEmailContaining(searchRequest.getSearchTerm(),searchRequest.getSearchTerm(),searchRequest.getSearchTerm());
 	    }
 	}
 
