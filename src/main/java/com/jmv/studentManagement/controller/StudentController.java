@@ -124,7 +124,7 @@ public class StudentController {
 	
 	
 	@GetMapping("/student/search")
-    public ResponseEntity<List<Student>> searchStudentsByUserId(@RequestParam long userId, @RequestParam("searchTerm") String query) {
+    public ResponseEntity<List<Student>> searchStudentsByUserId(@RequestParam("searchTerm") String query, @RequestParam("userId") long userId) {
         List<Student> searchResults = studentService.searchByUserId(query, userId);
         return ResponseEntity.ok(searchResults);
     }
