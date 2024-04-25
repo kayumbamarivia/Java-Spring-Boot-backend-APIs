@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jmv.studentManagement.model.Student;
@@ -123,24 +122,21 @@ public class StudentController {
 	}
 
 	//		REST API TO SEARCH FOR A RESOURCE(S)	
-	
-	 @GetMapping("/api/student/search")
-	    public List<Student> searchStudents(
-	            @RequestParam(required = false) Long userId,
-	            @RequestParam String searchTerm) {
-	        String currentUserRole = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
-
-	        if ("USER".equals(currentUserRole)) {
-	            if (userId != null) {
-	                return studentRepository.findByUserIdAndFirstNameContainingOrLastNameContainingOrEmailContaining(
-	                        userId, searchTerm, searchTerm, searchTerm);
-	            } else {
-	                return List.of();
-	            }
+	@PostMapping("/api/student/search")
+	public List<Student> searchStudents(@RequestBody SearchRequest searchRequest) {
+	    String currentUserRole = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
+	    
+	    if ("USER".equals(currentUserRole)) {
+	        if (searchRequest.getUserId() != null) {
+	            return studentRepository.findByUserIdAndSearchTerm(
+	                searchRequest.getUserId(), searchRequest.getSearchTerm());
 	        } else {
-	            return studentRepository.findByFirstNameContainingOrLastNameContainingOrEmailContaining(
-	                    searchTerm, searchTerm, searchTerm);
+	            return List.of();
 	        }
+	    } else {
+	        return studentRepository.findBySearchTerm(searchRequest.getSearchTerm());
 	    }
+	}
+
 
 }
