@@ -37,7 +37,7 @@ public class SecurityConfig {
 						.permitAll()
 						.requestMatchers("/api/users/**").hasAuthority("SUPERUSER")
 						.requestMatchers("/api/students/**").hasAnyAuthority("SUPERUSER","ADMIN")
-						.requestMatchers("/api/student/{id}/get/**","/api/student/{id}/edit/**","/api/student/{userId}/add/**","/api/student/{userId}/search/**","/api/token/**","/api/user/**","/api/{userId}/students/**").hasAnyAuthority("SUPERUSER","ADMIN","USER")
+						.requestMatchers("/api/student/{id}/get/**","/api/student/{id}/edit/**","/api/student/{userId}/add/**","/api/student/search/**","/api/token/**","/api/user/**","/api/{userId}/students/**").hasAnyAuthority("SUPERUSER","ADMIN","USER")
 						.anyRequest()
 						.authenticated())
 				.userDetailsService(userDetailsServiceImpl)

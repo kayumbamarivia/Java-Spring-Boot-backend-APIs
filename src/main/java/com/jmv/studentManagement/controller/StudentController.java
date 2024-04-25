@@ -123,8 +123,8 @@ public class StudentController {
 	}
 	
 	
-	@GetMapping("/student/{userId}/search")
-    public ResponseEntity<List<Student>> searchStudentsByUserId(@PathVariable("userId") long userId, @RequestParam("searchTerm") String query) {
+	@GetMapping("/student/search")
+    public ResponseEntity<List<Student>> searchStudentsByUserId(@RequestParam long userId, @RequestParam("searchTerm") String query) {
         List<Student> searchResults = studentService.searchByUserId(query, userId);
         return ResponseEntity.ok(searchResults);
     }
