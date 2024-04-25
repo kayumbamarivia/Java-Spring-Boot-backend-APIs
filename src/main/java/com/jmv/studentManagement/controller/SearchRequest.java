@@ -5,7 +5,6 @@ public class SearchRequest {
     private String searchTerm;
 	public SearchRequest() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public SearchRequest(Long userId, String searchTerm) {
 		super();

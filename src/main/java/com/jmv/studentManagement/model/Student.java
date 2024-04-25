@@ -19,7 +19,6 @@ public class Student {
 	private Long userId;
 	public Student() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public Student(long id, String firstName, String lastName, String email, Long userId) {
 		super();
