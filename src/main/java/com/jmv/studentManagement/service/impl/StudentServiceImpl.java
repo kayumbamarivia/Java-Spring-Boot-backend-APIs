@@ -59,7 +59,7 @@ public class StudentServiceImpl implements StudentService {
 	}
 
 	@Override
-	public List<Student> Search(String query) {
+	public List<Student> search(String query) {
 		return studentRepository.findByFirstNameContainingOrLastNameContainingOrEmailContaining(query, query, query);
 	}
 
@@ -80,10 +80,11 @@ public class StudentServiceImpl implements StudentService {
 	    return studentRepository.findByUserId(userId);
 	}
 
-
 	@Override
-	public List<Student> SearchByUserId(String query, long userId) {
-	    return studentRepository.findByUserIdAndFirstNameContainingOrLastNameContainingOrEmailContaining(userId, query, query, query);
+	public List<Student> searchByUserId(String query, long userId) {
+	    String formattedQuery = "%" + query + "%";
+	    return studentRepository.findByUserIdAndFirstNameContainingOrUserIdAndLastNameContainingOrUserIdAndEmailContaining(userId, formattedQuery, userId, formattedQuery, userId, formattedQuery);
 	}
+
 
 }

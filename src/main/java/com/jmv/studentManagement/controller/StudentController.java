@@ -118,13 +118,15 @@ public class StudentController {
 
 	@GetMapping("/students/search")
 	public List<Student> search(@RequestParam("searchTerm") String query){
-		List<Student> searchResults = studentService.Search(query);
+		List<Student> searchResults = studentService.search(query);
 		return searchResults;
 	}
+	
+	
 	@GetMapping("/student/{userId}/search")
-	public List<Student> search(@RequestParam("searchTerm") String query, @PathVariable("userId") long userId){
-		List<Student> searchResults = studentService.SearchByUserId(query, userId);
-		return searchResults;
-	}
+    public ResponseEntity<List<Student>> searchStudentsByUserId(@PathVariable("userId") long userId, @RequestParam("searchTerm") String query) {
+        List<Student> searchResults = studentService.searchByUserId(query, userId);
+        return ResponseEntity.ok(searchResults);
+    }
 
 }
