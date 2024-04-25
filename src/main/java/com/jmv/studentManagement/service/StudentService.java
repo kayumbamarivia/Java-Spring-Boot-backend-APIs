@@ -12,5 +12,5 @@ public interface StudentService {
 	Student updateStudentById(Student st, long id);
 	void deleteStudentById(long id);
 	List<Student> search(String query);
-	List<Student> searchByUserId(String query, long userId);
+	List<Student> searchByUserId(Long userId, String searchTerm);
 }

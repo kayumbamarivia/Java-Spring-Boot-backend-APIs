@@ -79,12 +79,13 @@ public class StudentServiceImpl implements StudentService {
 	public List<Student> getStudentsByUserId(long userId) {
 	    return studentRepository.findByUserId(userId);
 	}
-
+    
 	@Override
-	public List<Student> searchByUserId(String query, long userId) {
-	    String formattedQuery = "%" + query + "%";
-	    return studentRepository.findByUserIdAndFirstNameContainingOrUserIdAndLastNameContainingOrUserIdAndEmailContaining(userId, formattedQuery, userId, formattedQuery, userId, formattedQuery);
-	}
+	public List<Student> searchByUserId(Long userId, String searchTerm) {
+        return studentRepository.findByUserIdAndFirstNameContainingOrLastNameContainingOrEmailContaining(
+            userId, searchTerm, searchTerm, searchTerm);
+    }
+
 
 
 }
