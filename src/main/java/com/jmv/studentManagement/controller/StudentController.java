@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jmv.studentManagement.model.Student;
+import com.jmv.studentManagement.repository.StudentRepository;
 import com.jmv.studentManagement.service.StudentService;
 
 //@Controller
@@ -22,11 +24,15 @@ import com.jmv.studentManagement.service.StudentService;
 @RequestMapping("/api")
 public class StudentController {
 	private StudentService studentService;
+	private StudentRepository studentRepository;
+    
 
-	public StudentController(StudentService studentService) {
+	public StudentController(StudentService studentService, StudentRepository studentRepository) {
 		super();
 		this.studentService = studentService;
+		this.studentRepository = studentRepository;
 	}
+
 
 	//	REST API TO CREATE A RESOURCE(STUDENT)
 
@@ -114,20 +120,25 @@ public class StudentController {
 		return new ResponseEntity<String>("Student deleted successfully!!", HttpStatus.OK);
 	}
 
-	//		REST API TO SEARCH FOR A RESOURCE(S)
+	//		REST API TO SEARCH FOR A RESOURCE(S)	
+	
+	 @GetMapping("/api/student/search")
+	    public List<Student> searchStudents(
+	            @RequestParam(required = false) Long userId,
+	            @RequestParam String searchTerm) {
+	        String currentUserRole = SecurityContextHolder.getContext().getAuthentication().getAuthorities().iterator().next().getAuthority();
 
-	@GetMapping("/students/search")
-	public List<Student> search(@RequestParam("searchTerm") String query){
-		List<Student> searchResults = studentService.search(query);
-		return searchResults;
-	}
-	
-	
-	@GetMapping("/student/search")
-    public ResponseEntity<List<Student>> searchStudentsByUserId(@RequestParam String searchTerm, @RequestParam("userId") long userId) {
-        List<Student> searchResults = studentService.searchByUserId(
-                userId, searchTerm);
-        return ResponseEntity.ok(searchResults);
-    }
+	        if ("USER".equals(currentUserRole)) {
+	            if (userId != null) {
+	                return studentRepository.findByUserIdAndFirstNameContainingOrLastNameContainingOrEmailContaining(
+	                        userId, searchTerm, searchTerm, searchTerm);
+	            } else {
+	                return List.of();
+	            }
+	        } else {
+	            return studentRepository.findByFirstNameContainingOrLastNameContainingOrEmailContaining(
+	                    searchTerm, searchTerm, searchTerm);
+	        }
+	    }
 
 }
